@@ -1,0 +1,26 @@
+{
+  "name": "transify",
+  "version": "1.0.0",
+  "description": "A Node.js CLI tool to translate PDF files",
+  "homepage": "https://github.com/iamAmer/transify#readme",
+  "bugs": {
+    "url": "https://github.com/iamAmer/transify/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamAmer/transify.git"
+  },
+  "license": "MIT",
+  "bin": {
+    "transify": "./bin/index.js"
+  },
+  "author": "Muhammed Amer",
+  "type": "commonjs",
+  "main": "./bin/index.js",
+  "scripts": {
+    "test": "echo Error: no test specified && exit 1"
+  },
+  "dependencies": {
+    "yargs": "^17.7.2"
+  }
+}
