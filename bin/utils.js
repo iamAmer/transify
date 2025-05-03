@@ -11,7 +11,11 @@ async function extractText(pdfPath) {
     const outputPath = path.join(dir, `${filename}.txt`);
 
     const dataBuffer = fs.readFileSync(pdfPath);
-    const data = await pdf(dataBuffer);
+    // hide the warnings 
+    const data = await pdf(dataBuffer, {
+      pagerender: () => '',
+      max: 0
+    });
     
     fs.writeFileSync(outputPath, data.text);
     console.log(`Text extracted to: ${outputPath}`);
