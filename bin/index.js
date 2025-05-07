@@ -1,6 +1,4 @@
 #! /usr/bin/env node
-console.log("Hello World!");
-
 const utils = require('./utils.js')
 const yargs = require('yargs');
 const chalk = require('chalk');
@@ -78,6 +76,40 @@ yargs
     handler: async (argv) => {
       try {
         await utils.extractText(argv.path, argv.output);
+      } catch (err) {
+        console.error(chalk.red('\nError:', err.message));
+        process.exit(1);
+      }
+    }
+  })
+  .command({
+    command: 'sentence',
+    describe: 'Translate a sentence',
+    builder: (yargs) => {
+      return yargs
+        .option('s', {
+          alias: 'sentence',
+          describe: 'The sentence to be translated',
+          type: "string",
+          demandOption: true,
+        })
+        .option('f', {
+          alias: 'from',
+          describe: 'Souce Language',
+          type: 'string',
+          demandOption: true,
+        })
+        .option('t', {
+          alias: 'to',
+          describe: 'Target Language',
+          type: 'string',
+          demandOption: true,
+        })
+    },
+    handler: async (argv) => {
+      try {
+        const result = await utils.sentence(argv.sentence, argv.f, argv.t);
+        console.log(result);
       } catch (err) {
         console.error(chalk.red('\nError:', err.message));
         process.exit(1);
