@@ -3,6 +3,9 @@ console.log("Hello World!");
 
 const utils = require('./utils.js')
 const yargs = require('yargs');
+const chalk = require('chalk');
+const fs = require('fs');
+const path = require('path');
 
 // const usage = "\nUsage: translate --path <file_path> --from <lang> --to <lang>";
 yargs
@@ -36,9 +39,28 @@ yargs
           demandOption: true,
         })
     },
-    handler: (argv) => {
-      // for later use
-      // utils.translate();
+    handler: async(argv) => {
+      try {
+        if(!argv.path) {
+          throw new Error('Input PDF path is required');
+        }
+    
+        if (!fs.existsSync(argv.path)) {
+          throw new Error(`Input file not found: ${argv.path}`);
+        }
+
+        console.log(chalk.blue('\nProcessing PDF...'));
+
+        const extractedTextPath = path.resolve(await utils.extractText(argv.path));        
+        // console.log('Path of raw text', path.resolve(extractedTextPath))
+        console.log(chalk.blue('\nTranslating text...'));
+        await utils.readAndTranslate(extractedTextPath, argv.f, argv.t);
+        console.log(chalk.bold.green('\nAll operations completed successfully!'));
+    
+      } catch (err) {
+        console.error(chalk.red('\nError:', err.message));
+        process.exit(1);
+      }
     }
   })    
   .command({
