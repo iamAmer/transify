@@ -1,5 +1,5 @@
 {
-  "name": "transify",
+  "name": "transify-cli",
   "version": "1.0.0",
   "description": "A Node.js CLI tool to translate PDF files",
   "homepage": "https://github.com/iamAmer/transify#readme",
