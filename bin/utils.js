@@ -11,19 +11,20 @@ async function extractText(pdfPath) {
   try {
     const dir = path.dirname(pdfPath);
     const filename = path.basename(pdfPath, path.extname(pdfPath));
-    
     const outputPath = path.join(dir, `${filename}.txt`);
+
+    if (fs.existsSync(outputPath)) {
+      throw new Error(`Output file already exists: ${outputPath}`);
+    }
 
     const dataBuffer = fs.readFileSync(pdfPath);
     const data = await pdf(dataBuffer);
     
     const sentences = tokenizer.tokenize(data.text).join('\n');
-
     fs.writeFileSync(outputPath, sentences);
     console.log(chalk.green('Text extraction completed'));
 
     return outputPath;
-
   } catch (err) {
     console.error(`Error extracting text: ${err.message}`);
     process.exit(1);
@@ -70,11 +71,11 @@ async function readAndTranslate(filePath, fromLang, toLang) {
 }
 
 async function processChunk(text, fromLang, toLang, outputPath, chunkNumber) {
-    console.log(`Processing chunk ${chunkNumber}...`);
+    // console.log(`Processing chunk ${chunkNumber}...`);
     try {
         const translated = await translate(text, { from: fromLang, to: toLang });
         fs.appendFileSync(outputPath, translated + '\n', 'utf8');
-        console.log(`Chunk ${chunkNumber} translated successfully`);
+        // console.log(`Chunk ${chunkNumber} translated successfully`);
     } catch (err) {
         console.error(`Error translating chunk ${chunkNumber}:`, err);
         fs.appendFileSync(outputPath, `[UNTRANSLATED CHUNK ${chunkNumber}]\n${text}\n`, 'utf8');
@@ -106,4 +107,7 @@ module.exports = {
   readAndTranslate: readAndTranslate,
   sentence: sentence,
   languages: languages,
+  fs: fs,
+  chalk: chalk,
+  path: path
 };
