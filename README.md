@@ -13,7 +13,7 @@ A NodeJS CLI tool to extract text from PDFs and translate between languages.
 
 ### Via npm (Recommended)
 ```bash
-npm install -g transify-cli --save
+npm install -g transify-cli
 ```
 
 ## Manual Installation
